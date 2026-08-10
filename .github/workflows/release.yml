@@ -1,0 +1,54 @@
+name: Build custom EssentialsX release
+
+on:
+  push:
+    paths:
+      - "Essentials/src/**"
+      - "nms/**/src/**"
+      - "pom.xml"
+      - "Essentials/pom.xml"
+      - ".github/workflows/release.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      - name: Build EssentialsX
+        run: mvn -B -pl Essentials -am package -DskipTests
+
+      - name: Prepare artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          jar_path="$(find Essentials/target -maxdepth 1 -type f -name 'EssentialsX-*.jar' ! -name 'original-*' | head -n 1)"
+          short_sha="${GITHUB_SHA::7}"
+          tag="custom-${GITHUB_RUN_NUMBER}-${short_sha}"
+          artifact="EssentialsX-2.17.1-heal-feed-custom-${short_sha}.jar"
+          cp "$jar_path" "dist/$artifact"
+          echo "RELEASE_TAG=$tag" >> "$GITHUB_ENV"
+          echo "ARTIFACT_PATH=dist/$artifact" >> "$GITHUB_ENV"
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$RELEASE_TAG" "$ARTIFACT_PATH" \
+            --title "Custom EssentialsX $RELEASE_TAG" \
+            --notes "Automated release for commit $GITHUB_SHA. Includes separate hardcoded 600-second /heal and /feed cooldowns." \
+            --latest

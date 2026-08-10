@@ -68,6 +68,7 @@ public abstract class UserData extends PlayerExtension implements IConf {
         lastLocation = _getLastLocation();
         lastTeleportTimestamp = _getLastTeleportTimestamp();
         lastHealTimestamp = _getLastHealTimestamp();
+        lastFeedTimestamp = _getLastFeedTimestamp();
         jail = _getJail();
         mails = _getMails();
         teleportEnabled = _getTeleportEnabled();
@@ -382,6 +383,22 @@ public abstract class UserData extends PlayerExtension implements IConf {
     public void setLastHealTimestamp(long time) {
         lastHealTimestamp = time;
         config.setProperty("timestamps.lastheal", time);
+        config.save();
+    }
+
+    private long lastFeedTimestamp;
+
+    private long _getLastFeedTimestamp() {
+        return config.getLong("timestamps.lastfeed", 0);
+    }
+
+    public long getLastFeedTimestamp() {
+        return lastFeedTimestamp;
+    }
+
+    public void setLastFeedTimestamp(long time) {
+        lastFeedTimestamp = time;
+        config.setProperty("timestamps.lastfeed", time);
         config.save();
     }
 

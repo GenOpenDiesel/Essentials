@@ -742,6 +742,15 @@ public class OfflinePlayer implements Player {
     }
 
     @Override
+    public double getAbsorptionAmount() {
+        return 0D;
+    }
+
+    @Override
+    public void setAbsorptionAmount(double amount) {
+    }
+
+    @Override
     public void giveExp(int i) {
     }
 

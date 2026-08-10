@@ -504,6 +504,7 @@ public class EssentialsPlayerListener implements Listener {
         }
 
         if (ess.getSettings().isCommandCooldownsEnabled() && pluginCommand != null
+            && !"heal".equals(pluginCommand.getName()) && !"feed".equals(pluginCommand.getName())
             && !user.isAuthorized("essentials.commandcooldowns.bypass")) {
             int argStartIndex = event.getMessage().indexOf(" ");
             String args = argStartIndex == -1 ? "" // No arguments present 

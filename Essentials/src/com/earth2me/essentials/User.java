@@ -36,6 +36,7 @@ import static com.earth2me.essentials.I18n.tl;
 
 
 public class User extends UserData implements Comparable<User>, IMessageRecipient, net.ess3.api.IUser {
+    private static final int HEAL_FEED_COOLDOWN_SECONDS = 600;
     private static final Logger logger = Logger.getLogger("Essentials");
     private IMessageRecipient messageRecipient;
     private transient UUID teleportRequester;
@@ -141,18 +142,25 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
 
     @Override
     public void healCooldown() throws Exception {
+        checkHealFeedCooldown(getLastHealTimestamp(), "heal", "Mozesz uzyc /heal za ");
+        setLastHealTimestamp(System.currentTimeMillis());
+    }
+
+    public void feedCooldown() throws Exception {
+        checkHealFeedCooldown(getLastFeedTimestamp(), "feed", "Mozesz uzyc /feed za ");
+        setLastFeedTimestamp(System.currentTimeMillis());
+    }
+
+    private void checkHealFeedCooldown(final long lastTimestamp, final String command, final String messagePrefix) throws Exception {
         final Calendar now = new GregorianCalendar();
-        if (getLastHealTimestamp() > 0) {
-            final double cooldown = ess.getSettings().getHealCooldown();
+        if (lastTimestamp > 0) {
             final Calendar cooldownTime = new GregorianCalendar();
-            cooldownTime.setTimeInMillis(getLastHealTimestamp());
-            cooldownTime.add(Calendar.SECOND, (int) cooldown);
-            cooldownTime.add(Calendar.MILLISECOND, (int) ((cooldown * 1000.0) % 1000.0));
-            if (cooldownTime.after(now) && !isAuthorized("essentials.heal.cooldown.bypass")) {
-                throw new Exception(tl("timeBeforeHeal", DateUtil.formatDateDiff(cooldownTime.getTimeInMillis())));
+            cooldownTime.setTimeInMillis(lastTimestamp);
+            cooldownTime.add(Calendar.SECOND, HEAL_FEED_COOLDOWN_SECONDS);
+            if (cooldownTime.after(now) && !isAuthorized("essentials." + command + ".cooldown.bypass")) {
+                throw new Exception(ChatColor.RED + messagePrefix + DateUtil.formatDateDiff(cooldownTime.getTimeInMillis()) + ".");
             }
         }
-        setLastHealTimestamp(now.getTimeInMillis());
     }
 
     @Override

@@ -29,11 +29,11 @@
         </repository>
         <repository>
             <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
         <repository>
             <id>paper-repo</id>
-            <url>https://papermc.io/repo/repository/maven-public/</url>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
     </repositories>
 
@@ -47,8 +47,6 @@
         <module>EssentialsXMPP</module>
         <module>nms/NMSProvider</module>
         <module>nms/UpdatedMetaProvider</module>
-        <module>nms/1_8_R1Provider</module>
-        <module>nms/1_8_R2Provider</module>
         <module>nms/LegacyProvider</module>
         <module>nms/ReflectionProvider</module>
         <module>nms/FlattenedProvider</module>

@@ -234,6 +234,16 @@ public class FakeWorld implements World {
     }
 
     @Override
+    public List<Raid> getRaids() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Raid locateNearestRaid(Location location, int radius) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
     public String getName() {
         return name;
     }
@@ -375,6 +385,11 @@ public class FakeWorld implements World {
 
     @Override
     public boolean createExplosion(Location lctn, float f, boolean bln) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean createExplosion(Location location, float power, boolean setFire, boolean breakBlocks) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -685,6 +700,16 @@ public class FakeWorld implements World {
 
     @Override
     public boolean createExplosion(double d, double d1, double d2, float f, boolean bln, boolean bln1) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean createExplosion(double x, double y, double z, float power, boolean setFire, boolean breakBlocks, Entity source) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean createExplosion(Location location, float power, boolean setFire, boolean breakBlocks, Entity source) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
