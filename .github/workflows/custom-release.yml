@@ -1,0 +1,63 @@
+name: Build custom EssentialsX release
+
+on:
+  push:
+    paths:
+      - "Essentials/src/**"
+      - "EssentialsSpawn/src/**"
+      - "providers/**/src/**"
+      - "build-logic/**"
+      - "build.gradle"
+      - "settings.gradle.kts"
+      - "gradle.properties"
+      - "Essentials/build.gradle"
+      - "EssentialsSpawn/build.gradle"
+      - ".github/workflows/custom-release.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+
+      - name: Build EssentialsX and EssentialsSpawn
+        run: |
+          chmod +x ./gradlew
+          ./gradlew --no-daemon :EssentialsX:build :EssentialsXSpawn:build -x test
+
+      - name: Prepare artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          essentials_jar="$(find jars -maxdepth 1 -type f -name 'EssentialsX-*.jar' ! -name '*unshaded*' | head -n 1)"
+          spawn_jar="$(find jars -maxdepth 1 -type f -name 'EssentialsXSpawn-*.jar' ! -name '*unshaded*' | head -n 1)"
+          short_sha="${GITHUB_SHA::7}"
+          tag="custom-${GITHUB_RUN_NUMBER}-${short_sha}"
+          cp "$essentials_jar" "dist/EssentialsX-latest-heal-feed-custom-${short_sha}.jar"
+          cp "$spawn_jar" "dist/EssentialsXSpawn-latest-heal-feed-custom-${short_sha}.jar"
+          echo "RELEASE_TAG=$tag" >> "$GITHUB_ENV"
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$RELEASE_TAG" dist/*.jar \
+            --title "Custom EssentialsX $RELEASE_TAG" \
+            --notes "Automated release for commit $GITHUB_SHA from the latest EssentialsX 2.x branch. Includes EssentialsX, EssentialsXSpawn, and separate hardcoded 600-second /heal and /feed cooldowns." \
+            --latest

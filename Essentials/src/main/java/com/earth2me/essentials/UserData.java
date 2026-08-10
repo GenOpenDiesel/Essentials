@@ -322,6 +322,15 @@ public abstract class UserData extends PlayerExtension implements IConf {
         config.save();
     }
 
+    public long getLastFeedTimestamp() {
+        return holder.timestamps().lastFeed();
+    }
+
+    public void setLastFeedTimestamp(final long time) {
+        holder.timestamps().lastFeed(time);
+        config.save();
+    }
+
     public String getJail() {
         return holder.jail();
     }

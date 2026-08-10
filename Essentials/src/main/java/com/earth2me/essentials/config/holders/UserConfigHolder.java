@@ -394,6 +394,16 @@ public class UserConfigHolder {
             this.lastheal = value;
         }
 
+        private long lastfeed = 0L;
+
+        public long lastFeed() {
+            return this.lastfeed;
+        }
+
+        public void lastFeed(final long value) {
+            this.lastfeed = value;
+        }
+
         private long mute = 0L;
 
         public long mute() {

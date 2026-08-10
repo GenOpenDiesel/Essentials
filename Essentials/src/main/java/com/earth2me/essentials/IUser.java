@@ -42,6 +42,8 @@ public interface IUser {
 
     void healCooldown() throws Exception;
 
+    void feedCooldown() throws Exception;
+
     void giveMoney(BigDecimal value) throws MaxMoneyException;
 
     void giveMoney(final BigDecimal value, final CommandSource initiator) throws MaxMoneyException;

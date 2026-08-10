@@ -24,6 +24,10 @@ object GitUtil {
                 }
             }
             depth++
+            if (commit.parents.isEmpty()) {
+                walk.dispose()
+                return null
+            }
             commit = walk.parseCommit(commit.parents[0])
         }
     }

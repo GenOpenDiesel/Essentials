@@ -17,7 +17,6 @@ import com.earth2me.essentials.utils.VersionUtil;
 import com.google.common.collect.Lists;
 import net.ess3.api.IEssentials;
 import net.ess3.api.MaxMoneyException;
-import net.ess3.api.TranslatableException;
 import net.ess3.api.events.AfkStatusChangeEvent;
 import net.ess3.api.events.JailStatusChangeEvent;
 import net.ess3.api.events.MuteStatusChangeEvent;
@@ -26,6 +25,7 @@ import net.ess3.provider.PlayerLocaleProvider;
 import net.essentialsx.api.v2.events.PreTransactionEvent;
 import net.essentialsx.api.v2.events.TransactionEvent;
 import net.essentialsx.api.v2.services.mail.MailSender;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
@@ -59,6 +59,7 @@ import static com.earth2me.essentials.I18n.tlLocale;
 
 public class User extends UserData implements Comparable<User>, IMessageRecipient, net.ess3.api.IUser {
     private static final Statistic PLAY_ONE_TICK = EnumUtil.getStatistic("PLAY_ONE_MINUTE", "PLAY_ONE_TICK");
+    private static final int HEAL_FEED_COOLDOWN_SECONDS = 600;
 
     // User modules
     private final IMessageRecipient messageRecipient;
@@ -255,18 +256,26 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
 
     @Override
     public void healCooldown() throws Exception {
+        checkHealFeedCooldown(getLastHealTimestamp(), "heal", "Mozesz uzyc /heal za ");
+        setLastHealTimestamp(System.currentTimeMillis());
+    }
+
+    @Override
+    public void feedCooldown() throws Exception {
+        checkHealFeedCooldown(getLastFeedTimestamp(), "feed", "Mozesz uzyc /feed za ");
+        setLastFeedTimestamp(System.currentTimeMillis());
+    }
+
+    private void checkHealFeedCooldown(final long lastUseTimestamp, final String command, final String messagePrefix) throws Exception {
         final Calendar now = new GregorianCalendar();
-        if (getLastHealTimestamp() > 0) {
-            final double cooldown = ess.getSettings().getHealCooldown();
+        if (lastUseTimestamp > 0) {
             final Calendar cooldownTime = new GregorianCalendar();
-            cooldownTime.setTimeInMillis(getLastHealTimestamp());
-            cooldownTime.add(Calendar.SECOND, (int) cooldown);
-            cooldownTime.add(Calendar.MILLISECOND, (int) ((cooldown * 1000.0) % 1000.0));
-            if (cooldownTime.after(now) && !isAuthorized("essentials.heal.cooldown.bypass")) {
-                throw new TranslatableException("timeBeforeHeal", DateUtil.formatDateDiff(cooldownTime.getTimeInMillis()));
+            cooldownTime.setTimeInMillis(lastUseTimestamp);
+            cooldownTime.add(Calendar.SECOND, HEAL_FEED_COOLDOWN_SECONDS);
+            if (cooldownTime.after(now) && !isAuthorized("essentials." + command + ".cooldown.bypass")) {
+                throw new Exception(ChatColor.RED + messagePrefix + DateUtil.formatDateDiff(cooldownTime.getTimeInMillis()) + ".");
             }
         }
-        setLastHealTimestamp(now.getTimeInMillis());
     }
 
     @Override
