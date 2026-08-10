@@ -4,9 +4,11 @@ on:
   push:
     paths:
       - "Essentials/src/**"
+      - "EssentialsSpawn/src/**"
       - "nms/**/src/**"
       - "pom.xml"
       - "Essentials/pom.xml"
+      - "EssentialsSpawn/pom.xml"
       - ".github/workflows/release.yml"
   workflow_dispatch:
 
@@ -28,27 +30,27 @@ jobs:
           java-version: "21"
           cache: maven
 
-      - name: Build EssentialsX
-        run: mvn -B -pl Essentials -am package -DskipTests
+      - name: Build EssentialsX and EssentialsSpawn
+        run: mvn -B -pl Essentials,EssentialsSpawn -am package -DskipTests
 
-      - name: Prepare artifact
+      - name: Prepare artifacts
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p dist
-          jar_path="$(find Essentials/target -maxdepth 1 -type f -name 'EssentialsX-*.jar' ! -name 'original-*' | head -n 1)"
+          essentials_jar="$(find Essentials/target -maxdepth 1 -type f -name 'EssentialsX-*.jar' ! -name 'original-*' | head -n 1)"
+          spawn_jar="$(find EssentialsSpawn/target -maxdepth 1 -type f -name 'EssentialsXSpawn-*.jar' ! -name 'original-*' | head -n 1)"
           short_sha="${GITHUB_SHA::7}"
           tag="custom-${GITHUB_RUN_NUMBER}-${short_sha}"
-          artifact="EssentialsX-2.17.1-heal-feed-custom-${short_sha}.jar"
-          cp "$jar_path" "dist/$artifact"
+          cp "$essentials_jar" "dist/EssentialsX-2.17.1-heal-feed-custom-${short_sha}.jar"
+          cp "$spawn_jar" "dist/EssentialsXSpawn-2.17.1-heal-feed-custom-${short_sha}.jar"
           echo "RELEASE_TAG=$tag" >> "$GITHUB_ENV"
-          echo "ARTIFACT_PATH=dist/$artifact" >> "$GITHUB_ENV"
 
       - name: Create GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$RELEASE_TAG" "$ARTIFACT_PATH" \
+          gh release create "$RELEASE_TAG" dist/*.jar \
             --title "Custom EssentialsX $RELEASE_TAG" \
-            --notes "Automated release for commit $GITHUB_SHA. Includes separate hardcoded 600-second /heal and /feed cooldowns." \
+            --notes "Automated release for commit $GITHUB_SHA. Includes EssentialsX, EssentialsXSpawn, and separate hardcoded 600-second /heal and /feed cooldowns." \
             --latest
