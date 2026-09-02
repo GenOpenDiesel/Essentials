@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -53,8 +54,22 @@ public class Kit {
 
     public void checkPerms(final User user) throws Exception {
         if (!user.isAuthorized("essentials.kits." + kitName)) {
-            throw new TranslatableException("noKitPermission", "essentials.kits." + kitName);
+            throw new TranslatableException("noKitRank", getRankName());
         }
+    }
+
+    /**
+     * Name of the rank shown to players who are missing the permission for this kit.
+     * <p>
+     * Defaults to the kit name in upper case, and can be overridden per kit with a
+     * {@code rank: <name>} entry in kits.yml.
+     */
+    public String getRankName() {
+        final Object rank = kit == null ? null : kit.get("rank");
+        if (rank instanceof String && !((String) rank).trim().isEmpty()) {
+            return ((String) rank).trim();
+        }
+        return kitName.toUpperCase(Locale.ENGLISH);
     }
 
     public void checkDelay(final User user) throws Exception {
