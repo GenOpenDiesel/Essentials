@@ -32,6 +32,17 @@ import java.util.logging.Level;
 import static com.earth2me.essentials.I18n.tlLiteral;
 
 public class Kit {
+    /**
+     * Kits whose name does not match the rank sold in the shop. Anything not listed here falls
+     * back to the kit name in upper case, and a {@code rank: <name>} entry in kits.yml wins over
+     * both.
+     */
+    private static final Map<String, String> KIT_RANKS = new HashMap<>();
+
+    static {
+        KIT_RANKS.put("klucz", "EVIP");
+    }
+
     final IEssentials ess;
     final String kitName;
     final Map<String, Object> kit;
@@ -61,15 +72,17 @@ public class Kit {
     /**
      * Name of the rank shown to players who are missing the permission for this kit.
      * <p>
-     * Defaults to the kit name in upper case, and can be overridden per kit with a
-     * {@code rank: <name>} entry in kits.yml.
+     * Resolved in order: a {@code rank: <name>} entry in kits.yml, then {@link #KIT_RANKS},
+     * then the kit name in upper case.
      */
     public String getRankName() {
         final Object rank = kit == null ? null : kit.get("rank");
         if (rank instanceof String && !((String) rank).trim().isEmpty()) {
             return ((String) rank).trim();
         }
-        return kitName.toUpperCase(Locale.ENGLISH);
+
+        final String mapped = KIT_RANKS.get(kitName.toLowerCase(Locale.ENGLISH));
+        return mapped != null ? mapped : kitName.toUpperCase(Locale.ENGLISH);
     }
 
     public void checkDelay(final User user) throws Exception {
