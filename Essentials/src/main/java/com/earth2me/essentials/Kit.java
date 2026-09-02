@@ -1,6 +1,7 @@
 package com.earth2me.essentials;
 
 import com.earth2me.essentials.Trade.OverflowType;
+import com.earth2me.essentials.adventure.AdventureUtil;
 import com.earth2me.essentials.commands.NoChargeException;
 import com.earth2me.essentials.craftbukkit.Inventories;
 import com.earth2me.essentials.textreader.IText;
@@ -39,8 +40,21 @@ public class Kit {
      */
     private static final Map<String, String> KIT_RANKS = new HashMap<>();
 
+    /**
+     * Colour each rank is displayed in, matching the colours used for the ranks elsewhere on the
+     * server. Ranks that are not listed fall back to {@link #RANK_COLOR_FALLBACK}.
+     */
+    private static final Map<String, String> RANK_COLORS = new HashMap<>();
+
+    private static final String RANK_COLOR_FALLBACK = "gold";
+
     static {
         KIT_RANKS.put("klucz", "EVIP");
+
+        RANK_COLORS.put("VIP", "yellow"); // &e
+        RANK_COLORS.put("EVIP", "gold"); // &6
+        RANK_COLORS.put("MVIP", "dark_purple"); // &5
+        RANK_COLORS.put("ELITA", "aqua"); // &b
     }
 
     final IEssentials ess;
@@ -65,8 +79,18 @@ public class Kit {
 
     public void checkPerms(final User user) throws Exception {
         if (!user.isAuthorized("essentials.kits." + kitName)) {
-            throw new TranslatableException("noKitRank", getRankName());
+            throw new TranslatableException("noKitRank", AdventureUtil.parsed(getColoredRankName()));
         }
+    }
+
+    /**
+     * The rank name wrapped in its own colour tag, ready to be dropped into a message as a parsed
+     * placeholder. The name itself is escaped so a stray tag in kits.yml cannot break the message.
+     */
+    private String getColoredRankName() {
+        final String rank = getRankName();
+        final String color = RANK_COLORS.getOrDefault(rank.toUpperCase(Locale.ENGLISH), RANK_COLOR_FALLBACK);
+        return "<" + color + ">" + ess.getAdventureFacet().escapeTags(rank) + "</" + color + ">";
     }
 
     /**
