@@ -4,7 +4,7 @@ main: net.essentialsx.discordlink.EssentialsDiscordLink
 version: ${full.version}
 website: https://essentialsx.net/
 description: EssentialsX Discord addon which allows you link your Minecraft and Discord accounts together.
-authors: [JRoy]
+authors: [genallthebest]
 depend: [EssentialsDiscord]
 api-version: 1.13
 commands:

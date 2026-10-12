@@ -4,7 +4,7 @@ main: com.earth2me.essentials.protect.EssentialsProtect
 version: ${full.version}
 website: https://essentialsx.net/
 description: Provides protection for various parts of the world.
-authors: [Zenexer, ementalo, Aelux, Brettflan, KimKandor, snowleo, ceulemans, Xeology, KHobbits, drtshock]
+authors: [genallthebest]
 softdepend: [Essentials]
 api-version: 1.13
 permissions:
