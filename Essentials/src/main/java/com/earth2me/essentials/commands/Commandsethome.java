@@ -82,6 +82,9 @@ public class Commandsethome extends EssentialsCommand {
 
         usersHome.setHome(name, location);
         user.sendTl("homeSet", location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), name);
+        if (user == usersHome) {
+            user.sendComponent(ess.getAdventureFacet().deserializeMiniMessage(HomeLimitMessage.usage(user, ess.getSettings())));
+        }
         usersHome.setLastHomeConfirmation(null);
 
     }
@@ -93,7 +96,11 @@ public class Commandsethome extends EssentialsCommand {
                 if (usersHome.getHomes().contains(name)) {
                     return false;
                 }
-                throw new TranslatableException("maxHomes", ess.getSettings().getHomeLimit(user));
+                if (user != usersHome) {
+                    throw new TranslatableException("maxHomes", limit);
+                }
+                user.sendComponent(ess.getAdventureFacet().deserializeMiniMessage(HomeLimitMessage.create(user, ess.getSettings(), limit)));
+                throw new QuietAbortException();
             }
             return limit == 1;
         }

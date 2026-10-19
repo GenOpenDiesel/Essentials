@@ -3,8 +3,6 @@ package com.earth2me.essentials.commands;
 import com.earth2me.essentials.OfflinePlayerStub;
 import com.earth2me.essentials.Trade;
 import com.earth2me.essentials.User;
-import com.earth2me.essentials.adventure.AdventureUtil;
-import com.earth2me.essentials.utils.StringUtil;
 import io.papermc.lib.PaperLib;
 import net.ess3.api.TranslatableException;
 import net.ess3.api.events.UserTeleportHomeEvent;
@@ -22,7 +20,6 @@ public class Commandhome extends EssentialsCommand {
         super("home");
     }
 
-    // This method contains an undocumented translation parameters #EasterEgg
     @Override
     public void run(final Server server, final User user, final String commandLabel, final String[] args) throws Exception {
         final Trade charge = new Trade(this.getName(), ess);
@@ -98,15 +95,9 @@ public class Commandhome extends EssentialsCommand {
                         showError(user.getBase(), exception, commandLabel);
                     }
                 } else {
-                    final int count = homes.size();
-                    if (user.isAuthorized("essentials.home.bed")) {
-                        if (bed != null) {
-                            homes.add(user.playerTl("bed"));
-                        } else {
-                            homes.add(user.playerTl("bedNull"));
-                        }
-                    }
-                    user.sendTl("homes", AdventureUtil.parsed(StringUtil.joinList(homes)), count, getHomeLimit(finalPlayer));
+                    final String owner = finalPlayer.equals(user) ? null : finalPlayer.getName();
+                    final String homeList = HomeListMessage.create(homes, owner, user.isAuthorized("essentials.home.bed"), bed != null);
+                    user.sendComponent(ess.getAdventureFacet().deserializeMiniMessage(homeList));
                 }
             });
             if (!player.getBase().isOnline() || player.getBase() instanceof OfflinePlayerStub) {
@@ -116,16 +107,6 @@ public class Commandhome extends EssentialsCommand {
             PaperLib.getBedSpawnLocationAsync(player.getBase(), true).thenAccept(message::complete);
         }
         throw new NoChargeException();
-    }
-
-    private String getHomeLimit(final User player) {
-        if (!player.getBase().isOnline()) {
-            return "?";
-        }
-        if (player.isAuthorized("essentials.sethome.multiple.unlimited")) {
-            return "*";
-        }
-        return Integer.toString(ess.getSettings().getHomeLimit(player));
     }
 
     private void goHome(final User user, final User player, final String home, final Trade charge, final CompletableFuture<Boolean> future) throws Exception {
