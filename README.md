@@ -1,5 +1,6 @@
 > **BFSMC custom fork of EssentialsX — GNU GPL v3.**
 > Modified on 2026-10-19: hardcoded home-limit messages, home usage counters, and clickable home lists.
+> Updated on 2026-10-20 with official EssentialsX 26.3 support and modern Paper asynchronous teleport fixes.
 > See [BFSMC changes](BFSMC.md) and [built plugins](dist/). Original EssentialsX authors retain their rights to the upstream code.
 
 [![EssentialsX](https://i.imgur.com/CP4SZpB.png)](https://essentialsx.net)
@@ -30,7 +31,7 @@ however, have some new requirements:
 * **EssentialsX requires CraftBukkit, Spigot or Paper to run.** Other server software may work, but these are not tested
   by the team and we may not be able to help with any issues that occur.
 * **EssentialsX currently supports Minecraft versions 1.8.8, 1.9.4, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 
-  1.16.5, 1.17.1, 1.18.2, 1.19.4, 1.20.6, 1.21.11, 26.1.2, and 26.2.**
+  1.16.5, 1.17.1, 1.18.2, 1.19.4, 1.20.6, 1.21.11, 26.1.2, 26.2, and 26.3.**
 * **EssentialsX currently requires Java 8 or higher.** We recommend using the latest Java version supported by your
   server software.
 * **EssentialsX requires [Vault](http://dev.bukkit.org/bukkit-plugins/vault/) to enable using chat prefix/suffixes and
