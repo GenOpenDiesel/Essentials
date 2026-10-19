@@ -25,7 +25,7 @@ Wszystkie nowe komunikaty i tooltipy są wpisane na stałe w kodzie. Nie dodano 
 
 20 października 2026 r. połączono oficjalną gałąź EssentialsX `2.x` do commita `e70bdb81`, w tym obsługę Minecraft 26.3, nowe dane przedmiotów i mobów, poprawki asynchronicznej teleportacji oraz ładowania chunków na Paper 26.x. Zachowano dodatki BFSMC dotyczące domów, kitów oraz osobnych cooldownów `/heal` i `/feed`.
 
-Przeszły 24 testy komunikatów i klikalnych domów oraz kontrole stylu kodu. Zbudowano główny EssentialsX i pasujący EssentialsSpawn. Nie przeprowadzono próby na działającym serwerze Minecraft.
+Po aktualizacji do bazy 26.3 przeszły wszystkie 62 testy głównego EssentialsX (bez błędów i pominięć), w tym 24 testy dodatków BFSMC i 3 testy nowego mechanizmu Paper 26.x. Przeszły kontrole stylu kodu; zbudowano główny EssentialsX i pasujący EssentialsSpawn. Nie przeprowadzono próby na działającym serwerze Minecraft 26.3.
 
 Gotowe pliki znajdują się w [`dist/`](dist/). `EssentialsX-BFSMC.jar` zastępuje główny EssentialsX; `EssentialsXSpawn-BFSMC.jar` zastępuje moduł Spawn. Nie należy instalować kilku wersji tego samego modułu jednocześnie.
 
