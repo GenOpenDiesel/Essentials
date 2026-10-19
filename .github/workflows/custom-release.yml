@@ -44,20 +44,20 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p dist
+          mkdir -p release-artifacts
           essentials_jar="$(find jars -maxdepth 1 -type f -name 'EssentialsX-*.jar' ! -name '*unshaded*' | head -n 1)"
           spawn_jar="$(find jars -maxdepth 1 -type f -name 'EssentialsXSpawn-*.jar' ! -name '*unshaded*' | head -n 1)"
           short_sha="${GITHUB_SHA::7}"
           tag="custom-${GITHUB_RUN_NUMBER}-${short_sha}"
-          cp "$essentials_jar" "dist/EssentialsX-latest-heal-feed-custom-${short_sha}.jar"
-          cp "$spawn_jar" "dist/EssentialsXSpawn-latest-heal-feed-custom-${short_sha}.jar"
+          cp "$essentials_jar" "release-artifacts/EssentialsX-BFSMC-${short_sha}.jar"
+          cp "$spawn_jar" "release-artifacts/EssentialsXSpawn-BFSMC-${short_sha}.jar"
           echo "RELEASE_TAG=$tag" >> "$GITHUB_ENV"
 
       - name: Create GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$RELEASE_TAG" dist/*.jar \
+          gh release create "$RELEASE_TAG" release-artifacts/*.jar \
             --title "Custom EssentialsX $RELEASE_TAG" \
-            --notes "Automated release for commit $GITHUB_SHA from the latest EssentialsX 2.x branch. Includes EssentialsX, EssentialsXSpawn, and separate hardcoded 600-second /heal and /feed cooldowns." \
+            --notes "BFSMC EssentialsX fork built from commit $GITHUB_SHA. Includes EssentialsX, EssentialsXSpawn, separate 600-second /heal and /feed cooldowns, rank-aware home limit messages, home usage counters, and clickable home names with teleport tooltips. Source and license: https://github.com/$GITHUB_REPOSITORY/tree/$GITHUB_SHA" \
             --latest
