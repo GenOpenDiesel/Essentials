@@ -27,6 +27,8 @@ Wszystkie nowe komunikaty i tooltipy są wpisane na stałe w kodzie. Nie dodano 
 
 Po aktualizacji do bazy 26.3 przeszły wszystkie 62 testy głównego EssentialsX (bez błędów i pominięć), w tym 24 testy dodatków BFSMC i 3 testy nowego mechanizmu Paper 26.x. Przeszły kontrole stylu kodu; zbudowano główny EssentialsX i pasujący EssentialsSpawn. Nie przeprowadzono próby na działającym serwerze Minecraft 26.3.
 
+Po przeniesieniu dopisku pod listę domów ponownie przeszło wszystkich 6 testów klikalnej listy (w tym sprawdzenie nowej linii), kontrole stylu i budowanie obu JAR-ów.
+
 Gotowe pliki znajdują się w [`dist/`](dist/). `EssentialsX-BFSMC.jar` zastępuje główny EssentialsX; `EssentialsXSpawn-BFSMC.jar` zastępuje moduł Spawn. Nie należy instalować kilku wersji tego samego modułu jednocześnie.
 
 Wcześniejsze dodatki forka, takie jak osobne 600-sekundowe cooldowny `/heal` i `/feed` oraz komunikaty rang przy kitach, pozostają częścią pluginu.
