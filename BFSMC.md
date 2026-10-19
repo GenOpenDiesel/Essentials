@@ -15,7 +15,7 @@ Zmodyfikowany fork [EssentialsX](https://github.com/EssentialsX/Essentials), udo
 
 ## Klikalna lista domów
 
-Lista `/home` wyświetla podkreślone nazwy oraz dopisek `— kliknij aby teleportować`. Kliknięcie nazwy uruchamia `/essentials:home nazwa`, a tooltip wskazuje wybrany dom. Zachowane są standardowe sprawdzanie uprawnień, opłaty i zasady teleportacji.
+Lista `/home` wyświetla podkreślone nazwy, a pod nimi w osobnej linii `Kliknij aby teleportować` (zmiana z 20 października 2026 r.). Kliknięcie nazwy uruchamia `/essentials:home nazwa`, a tooltip wskazuje wybrany dom. Zachowane są standardowe sprawdzanie uprawnień, opłaty i zasady teleportacji.
 
 Łóżko jest widoczne wyłącznie z odpowiednią permisją. Ustawione łóżko jest klikalne; brakujące jest przekreślone i nieklikalne. Przy przeglądaniu domów innego gracza kliknięcie zachowuje jego nazwę w komendzie.
 

@@ -34,7 +34,8 @@ final class HomeListMessage {
                     .hoverEvent(Component.text("Nie ustawiono punktu odrodzenia w łóżku", NamedTextColor.GRAY)));
             }
         }
-        message = message.append(Component.text(" — kliknij aby teleportować", NamedTextColor.GRAY));
+        message = message.append(Component.newline())
+            .append(Component.text("Kliknij aby teleportować", NamedTextColor.GRAY));
         return MiniMessage.miniMessage().serialize(message);
     }
 

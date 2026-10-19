@@ -22,7 +22,7 @@ class HomeListMessageTest {
         final Component message = parse(HomeListMessage.create(Arrays.asList("home", "farma"), null, false, false));
         final List<Component> links = clickable(message);
         assertEquals(Arrays.asList("/essentials:home home", "/essentials:home farma"), commands(links));
-        assertEquals("Domy: home, farma — kliknij aby teleportować", text(message));
+        assertEquals("Domy: home, farma\nKliknij aby teleportować", text(message));
         for (final Component link : links) {
             assertEquals(ClickEvent.Action.RUN_COMMAND, link.clickEvent().action());
             assertEquals(HoverEvent.Action.SHOW_TEXT, link.hoverEvent().action());
@@ -40,7 +40,7 @@ class HomeListMessageTest {
     void existingBedIsClickableAndUsesTheBedSelector() {
         final Component message = parse(HomeListMessage.create(Arrays.asList("home"), null, true, true));
         assertEquals(Arrays.asList("/essentials:home home", "/essentials:home bed"), commands(clickable(message)));
-        assertTrue(text(message).contains("home, łóżko — kliknij aby teleportować"));
+        assertTrue(text(message).contains("home, łóżko\nKliknij aby teleportować"));
     }
 
     @Test
