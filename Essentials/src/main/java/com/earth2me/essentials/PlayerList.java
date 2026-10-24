@@ -57,7 +57,8 @@ public final class PlayerList {
         for (final User onlinePlayer : ess.getOnlineUsers()) {
             if (onlinePlayer.isHidden() || (user != null && onlinePlayer.isHiddenFrom(user.getBase()))) {
                 playerHidden++;
-                if (showHidden || user != null && !onlinePlayer.isHiddenFrom(user.getBase())) {
+                if ((user == null || !onlinePlayer.isVanishHiddenByWeight(user.getBase()))
+                        && (showHidden || user != null && !onlinePlayer.isHiddenFrom(user.getBase()))) {
                     hiddenCount++;
                 }
             }
@@ -79,6 +80,9 @@ public final class PlayerList {
     public static Map<String, List<User>> getPlayerLists(final IEssentials ess, final IUser sender, final boolean showHidden) {
         final Map<String, List<User>> playerList = new HashMap<>();
         for (final User onlineUser : ess.getOnlineUsers()) {
+            if (sender != null && onlineUser.isVanishHiddenByWeight(sender.getBase())) {
+                continue;
+            }
             if ((sender == null && !showHidden && onlineUser.isHidden()) || (sender != null && !showHidden && onlineUser.isHiddenFrom(sender.getBase()))) {
                 continue;
             }

@@ -34,6 +34,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -1058,15 +1059,76 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
         return vanished;
     }
 
+    /**
+     * Returns the highest explicitly granted numeric vanish weight, or zero.
+     * Wildcards and operator status do not assign a numeric weight.
+     */
+    public int getVanishWeight() {
+        final String prefix = "essentials.vanish.weight.";
+        int weight = 0;
+        for (final PermissionAttachmentInfo permission : getBase().getEffectivePermissions()) {
+            if (!permission.getValue() || !permission.getPermission().startsWith(prefix)) {
+                continue;
+            }
+            final String value = permission.getPermission().substring(prefix.length());
+            if (value.isEmpty()) {
+                continue;
+            }
+            boolean numeric = true;
+            for (int i = 0; i < value.length(); i++) {
+                if (value.charAt(i) < '0' || value.charAt(i) > '9') {
+                    numeric = false;
+                    break;
+                }
+            }
+            if (!numeric) {
+                continue;
+            }
+            try {
+                weight = Math.max(weight, Integer.parseInt(value));
+            } catch (final NumberFormatException ignored) {
+                // Ignore weights outside the supported integer range.
+            }
+        }
+        return weight;
+    }
+
+    public boolean canSeeVanished(final User target) {
+        return getUUID().equals(target.getUUID())
+                || isAuthorized("essentials.vanish.see") && getVanishWeight() >= target.getVanishWeight();
+    }
+
+    public boolean isVanishHiddenByWeight(final Player viewer) {
+        return isVanished() && !getUUID().equals(viewer.getUniqueId())
+                && getVanishWeight() > ess.getUser(viewer).getVanishWeight();
+    }
+
+    @SuppressWarnings("deprecation")
+    public void updateVanishVisibility(final User viewer) {
+        if (!isVanished() || getUUID().equals(viewer.getUUID())) {
+            return;
+        }
+        if (viewer.canSeeVanished(this)) {
+            viewer.getBase().showPlayer(getBase());
+        } else {
+            viewer.getBase().hidePlayer(getBase());
+        }
+    }
+
+    /** Refreshes both directions after this player's permissions change. */
+    public void refreshVanishVisibility() {
+        for (final User other : ess.getOnlineUsers()) {
+            updateVanishVisibility(other);
+            other.updateVanishVisibility(this);
+        }
+    }
+
     @Override
     public void setVanished(final boolean set) {
         vanished = set;
         if (set) {
             for (final User user : ess.getOnlineUsers()) {
-                if (!user.isAuthorized("essentials.vanish.see")) {
-                    //noinspection deprecation
-                    user.getBase().hidePlayer(getBase());
-                }
+                updateVanishVisibility(user);
             }
             setHidden(true);
             lastVanishTime = System.currentTimeMillis();

@@ -424,13 +424,13 @@ public class EssentialsPlayerListener implements Listener {
         updateCompass(user);
         user.setLeavingHidden(false);
 
-        if (!ess.getVanishedPlayersNew().isEmpty() && !user.isAuthorized("essentials.vanish.see")) {
+        if (!ess.getVanishedPlayersNew().isEmpty()) {
             for (final String p : ess.getVanishedPlayersNew()) {
                 final Player toVanish = ess.getServer().getPlayerExact(p);
                 if (toVanish != null && toVanish.isOnline()) {
-                    user.getBase().hidePlayer(toVanish);
+                    ess.getUser(toVanish).updateVanishVisibility(user);
                     if (ess.getSettings().isDebug()) {
-                        ess.getLogger().info("Hiding vanished player: " + p);
+                        ess.getLogger().info("Updating visibility of vanished player: " + p);
                     }
                 }
             }
@@ -940,6 +940,7 @@ public class EssentialsPlayerListener implements Listener {
         if (user.isVanished()) {
             user.setVanished(user.isAuthorized("essentials.vanish"));
         }
+        user.refreshVanishVisibility();
     }
 
     @EventHandler(priority = EventPriority.NORMAL)

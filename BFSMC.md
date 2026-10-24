@@ -21,6 +21,15 @@ Lista `/home` wyświetla podkreślone nazwy, a pod nimi w osobnej linii `Kliknij
 
 Wszystkie nowe komunikaty i tooltipy są wpisane na stałe w kodzie. Nie dodano wpisów do `messages*.properties`. Ustawianie domu innemu graczowi zachowuje standardowy komunikat o limicie.
 
+## Wagi vanisha
+
+Dodano hierarchię vanisha opartą na `essentials.vanish.weight.<liczba>`.
+Osoba z `essentials.vanish.see` widzi ukrytych graczy o równej lub niższej wadze.
+Najwyższa aktywna permisja wagowa wygrywa; brak wagi oznacza `0`.
+LuckPerms automatycznie odświeża widoczność po zmianie uprawnień.
+Wagi obejmują postać, TAB, podpowiedzi nicków oraz listy `/list` i `/near`.
+Przykładowe komendy dla rang mod, hadmin i owner: [VANISH-WEIGHTS.md](VANISH-WEIGHTS.md).
+
 ## Weryfikacja i pliki
 
 20 października 2026 r. połączono oficjalną gałąź EssentialsX `2.x` do commita `e70bdb81`, w tym obsługę Minecraft 26.3, nowe dane przedmiotów i mobów, poprawki asynchronicznej teleportacji oraz ładowania chunków na Paper 26.x. Zachowano dodatki BFSMC dotyczące domów, kitów oraz osobnych cooldownów `/heal` i `/feed`.

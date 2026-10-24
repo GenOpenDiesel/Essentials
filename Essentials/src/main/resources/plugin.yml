@@ -1373,7 +1373,10 @@ permissions:
   essentials.vanish.pvp:
     description: Allows the bearer to attack players while in vanish mode
   essentials.vanish.see:
-    description: Allows the bearer to see other players in vanish mode
+    description: Allows seeing vanished players whose vanish weight is equal to or lower than the bearer's
+  essentials.vanish.weight.<number>:
+    description: Sets vanish priority to the highest granted non-negative integer weight (default 0)
+    default: false
   essentials.vanish.effect:
     description: Applies invisibility effects to the player when they are in vanish mode
   essentials.vanish.interact:

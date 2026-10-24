@@ -117,7 +117,17 @@ public class LuckPermsHandler extends ModernVaultHandler {
             this.recalculateSubscription = this.luckPerms.getEventBus().subscribe(
                 ess,
                 UserDataRecalculateEvent.class,
-                event -> invalidateCache(event.getUser().getUniqueId())
+                event -> {
+                    final UUID uuid = event.getUser().getUniqueId();
+                    invalidateCache(uuid);
+                    // LuckPerms recalculates asynchronously; refresh Bukkit visibility on the next tick.
+                    ess.scheduleSyncDelayedTask(() -> {
+                        final Player player = ess.getServer().getPlayer(uuid);
+                        if (player != null && player.isOnline()) {
+                            ess.getUser(player).refreshVanishVisibility();
+                        }
+                    }, 1);
+                }
             );
         }
         return luckPerms != null && super.tryProvider(ess);
