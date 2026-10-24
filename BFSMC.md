@@ -38,6 +38,12 @@ Po aktualizacji do bazy 26.3 przeszły wszystkie 62 testy głównego EssentialsX
 
 Po przeniesieniu dopisku pod listę domów ponownie przeszło wszystkich 6 testów klikalnej listy (w tym sprawdzenie nowej linii), kontrole stylu i budowanie obu JAR-ów.
 
+24 października 2026 r. po dodaniu wag vanisha przeszło wszystkich 76 testów głównego
+EssentialsX (w tym 14 nowych testów wag, bez błędów i pominięć), kontrole stylu oraz
+budowanie EssentialsX i EssentialsSpawn. Testy sprawdzają hierarchię mod/hadmin/owner,
+równe wagi, awans i degradację, zmianę świata, podpowiedzi nicków oraz listę graczy
+i jej licznik ukrytych. Nie przeprowadzono próby na działającym serwerze Minecraft.
+
 Gotowe pliki znajdują się w [`dist/`](dist/). `EssentialsX-BFSMC.jar` zastępuje główny EssentialsX; `EssentialsXSpawn-BFSMC.jar` zastępuje moduł Spawn. Nie należy instalować kilku wersji tego samego modułu jednocześnie.
 
 Wcześniejsze dodatki forka, takie jak osobne 600-sekundowe cooldowny `/heal` i `/feed` oraz komunikaty rang przy kitach, pozostają częścią pluginu.
