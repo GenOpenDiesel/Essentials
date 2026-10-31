@@ -1341,9 +1341,9 @@ permissions:
   essentials.tphere:
     description: Allows access to the /tphere command
   essentials.tpo:
-    description: Allows access to the /tpo command
+    description: Allows access to /tpo and bypassing /tptoggle with /tp
   essentials.tpohere:
-    description: Allows access to the /tpohere command
+    description: Allows access to /tpohere and bypassing /tptoggle with /tphere
   essentials.tppos:
     description: Allows access to the /tppos command
   essentials.tptoggle:

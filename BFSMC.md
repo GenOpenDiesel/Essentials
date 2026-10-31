@@ -30,6 +30,26 @@ LuckPerms automatycznie odświeża widoczność po zmianie uprawnień.
 Wagi obejmują postać, TAB, podpowiedzi nicków oraz listy `/list` i `/near`.
 Przykładowe komendy dla rang mod, hadmin i owner: [VANISH-WEIGHTS.md](VANISH-WEIGHTS.md).
 
+## Bypass blokady teleportacji dla moderacji
+
+Od 31 października 2026 r. zwykłe `/tp` (także warianty przenoszące innych graczy)
+omija `/tptoggle`, jeśli wykonujący ma `essentials.tpo`. `/tphere` korzysta
+analogicznie z `essentials.tpohere`. Uprawnienia dotyczą wykonującego komendę.
+Bez nich blokada nadal obowiązuje. Pozostałe sprawdzenia komend, w tym dostęp
+do światów i widoczność graczy na vanishu, pozostają aktywne.
+
+Nadaj grupie mod+ odpowiednie permisje w LuckPerms (poniżej nazwa grupy `mod+`;
+jeśli ma inną nazwę wewnętrzną, użyj jej):
+
+```text
+lp group mod+ permission set essentials.tpo true
+lp group mod+ permission set essentials.tpohere true
+```
+
+Wyższe rangi dziedziczą bypass, jeśli dziedziczą tę grupę. Dostęp do `/tp`
+i `/tphere` jest nadal wymagany. `/tpo nick` oraz `/tpohere nick` także pozostają
+dostępne jako osobne komendy. Prośby `/tpa` i `/tpahere` zachowują dotychczasowe zasady.
+
 ## Weryfikacja i pliki
 
 20 października 2026 r. połączono oficjalną gałąź EssentialsX `2.x` do commita `e70bdb81`, w tym obsługę Minecraft 26.3, nowe dane przedmiotów i mobów, poprawki asynchronicznej teleportacji oraz ładowania chunków na Paper 26.x. Zachowano dodatki BFSMC dotyczące domów, kitów oraz osobnych cooldownów `/heal` i `/feed`.
