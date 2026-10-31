@@ -52,6 +52,12 @@ dostępne jako osobne komendy. Prośby `/tpa` i `/tpahere` zachowują dotychczas
 
 ## Weryfikacja i pliki
 
+31 października 2026 r. przeszło 9 testów bypassu `/tptoggle` (0 błędów,
+0 pominiętych), obejmujących `/tp nick`, `/tp gracz cel`, współrzędne,
+`/tphere`, brak uprawnień i rozdzielenie permisji obu komend. Przeszły
+kontrole stylu głównego kodu i testów; istniejąca uwaga informacyjna
+w `StringUtil.java` nie dotyczy poprawki. Nie sprawdzano jej na działającym serwerze.
+
 20 października 2026 r. połączono oficjalną gałąź EssentialsX `2.x` do commita `e70bdb81`, w tym obsługę Minecraft 26.3, nowe dane przedmiotów i mobów, poprawki asynchronicznej teleportacji oraz ładowania chunków na Paper 26.x. Zachowano dodatki BFSMC dotyczące domów, kitów oraz osobnych cooldownów `/heal` i `/feed`.
 
 Po aktualizacji do bazy 26.3 przeszły wszystkie 62 testy głównego EssentialsX (bez błędów i pominięć), w tym 24 testy dodatków BFSMC i 3 testy nowego mechanizmu Paper 26.x. Przeszły kontrole stylu kodu; zbudowano główny EssentialsX i pasujący EssentialsSpawn. Nie przeprowadzono próby na działającym serwerze Minecraft 26.3.
