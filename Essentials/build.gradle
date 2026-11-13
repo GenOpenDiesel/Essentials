@@ -7,6 +7,8 @@ dependencies {
         exclude group: "org.bukkit", module: "bukkit"
     }
     compileOnly 'net.luckperms:api:5.3'
+    compileOnly 'com.github.NEZNAMY:TAB-API:6.1.2'
+    testImplementation 'com.github.NEZNAMY:TAB-API:6.1.2'
 
     api 'io.papermc:paperlib:1.0.6'
 

@@ -24,7 +24,9 @@ Wszystkie nowe komunikaty i tooltipy są wpisane na stałe w kodzie. Nie dodano 
 ## Wagi vanisha
 
 Dodano hierarchię vanisha opartą na `essentials.vanish.weight.<liczba>`.
-Osoba z `essentials.vanish.see` widzi ukrytych graczy o równej lub niższej wadze.
+Osoba z dodatnią wagą widzi ukrytych graczy o równej lub niższej wadze, także bez `essentials.vanish.see`.
+Przy wadze 0 zachowano wymaganie `essentials.vanish.see`.
+Integracja z TAB dodaje `[VANISH]` nad głową i zachowuje dotychczasowy suffix rangi.
 Najwyższa aktywna permisja wagowa wygrywa; brak wagi oznacza `0`.
 LuckPerms automatycznie odświeża widoczność po zmianie uprawnień.
 Wagi obejmują postać, TAB, podpowiedzi nicków oraz listy `/list` i `/near`.
@@ -51,6 +53,12 @@ i `/tphere` jest nadal wymagany. `/tpo nick` oraz `/tpohere nick` także pozosta
 dostępne jako osobne komendy. Prośby `/tpa` i `/tpahere` zachowują dotychczasowe zasady.
 
 ## Weryfikacja i pliki
+
+13 listopada 2026 r. przeszły wszystkie 92 testy głównego EssentialsX (0 błędów,
+0 pominiętych), w tym 16 testów wag vanisha i 5 testów suffixu nad głową przez TAB.
+Przeszły kontrole stylu głównego kodu i testów; pozostała wcześniejsza uwaga
+informacyjna w `StringUtil.java`. Zbudowano EssentialsX i EssentialsSpawn.
+Integracja korzysta z API TAB 6.1.2; nie przeprowadzono próby na działającym serwerze z TAB.
 
 31 października 2026 r. przeszło 9 testów bypassu `/tptoggle` (0 błędów,
 0 pominiętych), obejmujących `/tp nick`, `/tp gracz cel`, współrzędne,

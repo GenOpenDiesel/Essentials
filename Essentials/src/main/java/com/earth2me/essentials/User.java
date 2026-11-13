@@ -1094,8 +1094,9 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
     }
 
     public boolean canSeeVanished(final User target) {
+        final int weight = getVanishWeight();
         return getUUID().equals(target.getUUID())
-                || isAuthorized("essentials.vanish.see") && getVanishWeight() >= target.getVanishWeight();
+                || (weight > 0 || isAuthorized("essentials.vanish.see")) && weight >= target.getVanishWeight();
     }
 
     public boolean isVanishHiddenByWeight(final Player viewer) {
@@ -1134,7 +1135,8 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
             lastVanishTime = System.currentTimeMillis();
             ess.getVanishedPlayersNew().add(getName());
             this.getBase().setMetadata("vanished", new FixedMetadataValue(ess, true));
-            if (isAuthorized("essentials.vanish.effect")) {
+            // Potion invisibility would hide the model and nametag even from equal/higher ranks.
+            if (getVanishWeight() == 0 && isAuthorized("essentials.vanish.effect")) {
                 this.getBase().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false));
             }
             if (ess.getSettings().sleepIgnoresVanishedPlayers()) {

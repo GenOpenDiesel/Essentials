@@ -161,6 +161,7 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
     private static Logger LOGGER = null;
     public static boolean TESTING = false;
     private final transient TNTExplodeListener tntListener = new TNTExplodeListener();
+    private transient TabVanishNametags tabVanishNametags;
     private final transient Set<String> vanishedPlayers = new LinkedHashSet<>();
     private final transient Map<String, IEssentialsCommand> commandMap = new HashMap<>();
     private final transient ProviderFactory providerFactory = new ProviderFactory(this);
@@ -535,6 +536,15 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
         }
 
         jails.resetListener();
+        if (tabVanishNametags == null) {
+            // Wait until all plugins have enabled, including TAB with a dependency on Essentials.
+            scheduleSyncDelayedTask(() -> {
+                if (tabVanishNametags == null && pm.isPluginEnabled("TAB")) {
+                    tabVanishNametags = new TabVanishNametags(this);
+                    scheduleSyncRepeatingTask(tabVanishNametags, 1, 20);
+                }
+            });
+        }
     }
 
     @Override
@@ -544,6 +554,10 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 
     @Override
     public void onDisable() {
+        if (tabVanishNametags != null) {
+            tabVanishNametags.close();
+            tabVanishNametags = null;
+        }
         if (adventureFacet != null) {
             adventureFacet.close();
         }

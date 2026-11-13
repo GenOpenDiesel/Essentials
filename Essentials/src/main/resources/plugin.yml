@@ -4,7 +4,7 @@ main: com.earth2me.essentials.Essentials
 version: ${full.version}
 website: https://essentialsx.net/
 description: Provides an essential, core set of commands for Bukkit.
-softdepend: [Vault, LuckPerms]
+softdepend: [Vault, LuckPerms, TAB]
 authors: [genallthebest]
 api-version: "1.13"
 commands:
@@ -1373,9 +1373,9 @@ permissions:
   essentials.vanish.pvp:
     description: Allows the bearer to attack players while in vanish mode
   essentials.vanish.see:
-    description: Allows seeing vanished players whose vanish weight is equal to or lower than the bearer's
+    description: Allows unweighted players to see vanished players with weight zero
   essentials.vanish.weight.<number>:
-    description: Sets vanish priority to the highest granted non-negative integer weight (default 0)
+    description: Sets vanish priority (default 0); positive weights also reveal vanished players of equal or lower weight
     default: false
   essentials.vanish.effect:
     description: Applies invisibility effects to the player when they are in vanish mode

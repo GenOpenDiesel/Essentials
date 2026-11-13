@@ -1,5 +1,8 @@
 dependencyResolutionManagement {
     repositories {
+        maven("https://jitpack.io") {
+            content { includeGroup("com.github.NEZNAMY") }
+        }
         maven("https://repo.papermc.io/repository/maven-public/")
         maven("https://hub.spigotmc.org/nexus/content/groups/public/") {
             content {

@@ -3,6 +3,7 @@ package com.earth2me.essentials;
 import com.earth2me.essentials.commands.Commandmsg;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.permissions.PermissionAttachment;
+import org.bukkit.potion.PotionEffectType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -65,17 +66,32 @@ class VanishWeightTest {
 
     @Test
     void equalRanksCanSeeEachOther() {
-        final User peer = addStaff("peer", 50);
-        hadmin.setVanished(true);
-        assertTrue(peer.getBase().canSee(hadmin.getBase()));
+        final User peer = addStaff("peer", 100);
+        peer.getBase().addAttachment(ess, "essentials.vanish.see", false);
+        owner.setVanished(true);
+        assertTrue(peer.getBase().canSee(owner.getBase()));
     }
 
     @Test
-    void weightDoesNotGrantSeePermission() {
+    void positiveWeightGrantsVisibilityWithoutSeePermission() {
         final PermissionAttachment attachment = owner.getBase().addAttachment(ess);
         attachment.setPermission("essentials.vanish.see", false);
         mod.setVanished(true);
-        assertFalse(owner.getBase().canSee(mod.getBase()));
+        assertTrue(owner.getBase().canSee(mod.getBase()));
+    }
+
+    @Test
+    void lowerWeightStillCannotSeeHigherWeightWithoutSeePermission() {
+        mod.getBase().addAttachment(ess, "essentials.vanish.see", false);
+        owner.setVanished(true);
+        assertFalse(mod.getBase().canSee(owner.getBase()));
+    }
+
+    @Test
+    void weightedVanishDoesNotHideModelAndNametagWithPotionEffect() {
+        owner.getBase().addAttachment(ess, "essentials.vanish.effect", true);
+        owner.setVanished(true);
+        assertFalse(owner.getBase().hasPotionEffect(PotionEffectType.INVISIBILITY));
     }
 
     @Test
